@@ -1,21 +1,16 @@
 import dotenv from 'dotenv';
 dotenv.config();
+
 import cron from 'node-cron';
 import { checkHealth } from './utils/health';
 import { sendReport } from './utils/report';
 import { subscribe, unsubscribe } from './utils/telegram';
+import bot from './libs/telegraf';
 
-// Schedule the function to run every 15 minutes
 cron.schedule('*/15 * * * *', () => {
     console.log('Running health check...');
     checkHealth(true, '', null);
 });
-
-// Run the function immediately on startup
-checkHealth(true, '', null);
-
-/* Bot */
-import bot from './libs/telegraf';
 
 const commands = [
     { command: '/subscribe', description: 'Subscribe to receive notifications from the bot.' },
@@ -36,13 +31,11 @@ bot.command('help', (ctx) => {
     ctx.reply(`Here are the available commands:\n\n${commandList}`);
 });
 
-// Handle /subscribe command
 bot.command('subscribe', async (ctx) => {
     const chatId = ctx.chat.id.toString();
     await subscribe(chatId, ctx);
 });
 
-// Handle /unsubscribe command
 bot.command('unsubscribe', async (ctx) => {
     const chatId = ctx.chat.id.toString();
     await unsubscribe(chatId, ctx);
