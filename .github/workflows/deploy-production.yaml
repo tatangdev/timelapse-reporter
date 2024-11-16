@@ -24,6 +24,9 @@ jobs:
       - name: Install Packages
         run: npm install
 
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
       - name: Deploy to Railway
         run: railway up --service ${{ secrets.PROD_RAILWAY_SERVICE_ID }}
         env:
