@@ -12,7 +12,8 @@
     "@types/node-cron": "^3.0.11"
   },
   "scripts": {
-    "start": "node ./dist/app.js",
-    "dev": "tsc && node ./dist/app.js"
+    "start": "node dist/app.js",
+    "build": "tsc",
+    "dev": "tsc && node dist/app.js"
   }
 }
