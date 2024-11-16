@@ -15,5 +15,15 @@
     "start": "node dist/app.js",
     "build": "tsc",
     "dev": "tsc && node dist/app.js"
-  }
+  },
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "commonjs",
+    "target": "es6",
+    "strict": true
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

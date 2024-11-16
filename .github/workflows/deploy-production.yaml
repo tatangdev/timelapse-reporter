@@ -18,16 +18,16 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Install TypeScript
-        run: npm i -g typescript
-
-      - name: Install Packages
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build TypeScript
-        run: tsc
+      - name: Install TypeScript
+        run: npm install typescript --save-dev
 
-      - name: Verify Build
+      - name: Build Project
+        run: npm run build
+
+      - name: Verify Build Output
         run: ls -l dist
 
       - name: Install Railway CLI
