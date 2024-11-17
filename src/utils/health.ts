@@ -4,7 +4,7 @@ import { notifySubscribers } from './telegram';
 
 const TIMEZONE: string = process.env.TIMEZONE || 'Asia/Jakarta';
 
-async function checkHealth(isSystemCheck: boolean, chatId: string, ctx: any): Promise<void> {
+async function checkHealth(isSystemCheck: boolean, ctx: any): Promise<void> {
     const currentTime = moment().tz(TIMEZONE);
     const currentHour = currentTime.hour();
 

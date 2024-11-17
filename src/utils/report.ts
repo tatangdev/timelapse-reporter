@@ -3,7 +3,7 @@ import { getFtpFiles } from './ftp';
 
 const REPORT_START_DATE: string = process.env.REPORT_START_DATE || '2024-10-26';
 
-async function sendReport(hatId: string, ctx: any): Promise<void> {
+async function sendReport(ctx: any): Promise<void> {
     ctx.reply('Preparing CCTV report... ⏳');
     const dates = getDateRange(REPORT_START_DATE, moment().format('YYYY-MM-DD'));
     const files = await getFtpFiles();

@@ -9,7 +9,7 @@ import bot from './libs/telegraf';
 
 cron.schedule('*/15 * * * *', () => {
     console.log('Running health check...');
-    checkHealth(true, '', null);
+    checkHealth(true, null);
 });
 
 const commands = [
@@ -42,13 +42,11 @@ bot.command('unsubscribe', async (ctx) => {
 });
 
 bot.command('health', async (ctx) => {
-    const chatId = ctx.chat.id.toString();
-    await checkHealth(false, chatId, ctx);
+    await checkHealth(false, ctx);
 });
 
 bot.command('report', async (ctx) => {
-    const chatId = ctx.chat.id.toString();
-    await sendReport(chatId, ctx);
+    await sendReport(ctx);
 });
 
 bot.launch();
