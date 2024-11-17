@@ -1,9 +1,9 @@
 import bot from '../libs/telegraf';
 import redisClient from '../libs/redis';
 
-async function subscribe(chatId: string, ctx: any) {
+async function subscribe(chatId: string, ctx: any): Promise<void> {
     try {
-        await redisClient.sAdd('subscribers', chatId);
+        await redisClient.sadd('subscribers', chatId);
         ctx.reply('You have successfully subscribed to CCTV updates! ✅');
     } catch (error) {
         console.error('Error subscribing user:', error);
@@ -11,9 +11,9 @@ async function subscribe(chatId: string, ctx: any) {
     }
 }
 
-async function unsubscribe(chatId: string, ctx: any) {
+async function unsubscribe(chatId: string, ctx: any): Promise<void> {
     try {
-        const removed = await redisClient.sRem('subscribers', chatId);
+        const removed = await redisClient.srem('subscribers', chatId);
         if (removed) {
             ctx.reply('You have successfully unsubscribed from CCTV updates. ✅');
         } else {
@@ -27,7 +27,7 @@ async function unsubscribe(chatId: string, ctx: any) {
 
 async function notifySubscribers(message: string): Promise<void> {
     try {
-        const subscribers = await redisClient.sMembers('subscribers');
+        const subscribers = await redisClient.smembers('subscribers');
         for (const chatId of subscribers) {
             await bot.telegram.sendMessage(chatId, message);
         }
