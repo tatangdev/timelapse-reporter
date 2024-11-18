@@ -59,4 +59,4 @@ function isImageFile(fileName: string): boolean {
     return ['.jpg', '.jpeg', '.png'].includes(path.extname(fileName).toLowerCase());
 }
 
-export { getFtpFiles, getFileName, isImageFile };
+export { getFtpFiles, getFileName, isImageFile, FileDetails };

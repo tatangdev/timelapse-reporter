@@ -1,7 +1,8 @@
 import bot from '../libs/telegraf';
 import redisClient from '../libs/redis';
+import { Context } from 'telegraf';
 
-async function subscribe(chatId: string, ctx: any): Promise<void> {
+async function subscribe(chatId: string, ctx: Context): Promise<void> {
     try {
         await redisClient.sadd('subscribers', chatId);
         ctx.reply('You have successfully subscribed to CCTV updates! ✅');
@@ -11,7 +12,7 @@ async function subscribe(chatId: string, ctx: any): Promise<void> {
     }
 }
 
-async function unsubscribe(chatId: string, ctx: any): Promise<void> {
+async function unsubscribe(chatId: string, ctx: Context): Promise<void> {
     try {
         const removed = await redisClient.srem('subscribers', chatId);
         if (removed) {

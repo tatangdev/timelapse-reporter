@@ -1,27 +1,28 @@
 import moment from 'moment-timezone';
-import { getFtpFiles } from './ftp';
+import { FileDetails, getFtpFiles } from './ftp';
 import { notifySubscribers } from './telegram';
 import redisClient from '../libs/redis';
+import { Context } from 'telegraf';
 
 const TIMEZONE: string = process.env.TIMEZONE || 'Asia/Jakarta';
 const NOTIFY_COUNT_KEY = 'no_images_notify_count';
 const NOTIFY_DATE_KEY = 'no_images_notify_date';
 
-async function checkHealth(isSystemCheck: boolean, ctx: any): Promise<void> {
+async function checkHealth(isSystemCheck: boolean, ctx: Context | null): Promise<void> {
     const currentTime = moment().tz(TIMEZONE);
     const currentHour = currentTime.hour();
 
     if (isSystemCheck && (currentHour < 7 || currentHour >= 18)) return;
-    if (!isSystemCheck) ctx.reply('Checking CCTV health... ⏳');
+    if (!isSystemCheck && ctx) ctx.reply('Checking CCTV health... ⏳');
     const ftpFiles = await getFtpFiles();
     if (isSystemCheck) {
         await handleLastHourCheck(ftpFiles, currentTime);
     } else {
-        await handleTodayCheck(ftpFiles, currentTime, ctx);
+        if (ctx) await handleTodayCheck(ftpFiles, currentTime, ctx);
     }
 }
 
-async function handleTodayCheck(files: any[], currentTime: moment.Moment, ctx: any): Promise<void> {
+async function handleTodayCheck(files: FileDetails[], currentTime: moment.Moment, ctx: Context): Promise<void> {
     const todayDate = currentTime.format('YYYY-MM-DD');
     const todayFiles = files.filter(file => file.date === todayDate);
 
@@ -35,7 +36,7 @@ async function handleTodayCheck(files: any[], currentTime: moment.Moment, ctx: a
     }
 }
 
-async function handleLastHourCheck(files: any[], currentTime: moment.Moment): Promise<void> {
+async function handleLastHourCheck(files: FileDetails[], currentTime: moment.Moment): Promise<void> {
     const oneHourAgo = currentTime.clone().subtract(1, 'hour').unix();
     const lastHourFiles = files.filter(file => file.unixTimestamp >= oneHourAgo && file.unixTimestamp < currentTime.unix());
 

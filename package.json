@@ -14,7 +14,8 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "tsc",
-    "dev": "tsc && node dist/app.js"
+    "dev": "tsc && node dist/app.js",
+    "download": "tsc && node dist/utils/download.js"
   },
   "compilerOptions": {
     "outDir": "./dist",
