@@ -7,7 +7,7 @@ import { sendReport } from './utils/report';
 import { subscribe, unsubscribe } from './utils/telegram';
 import bot from './libs/telegraf';
 
-cron.schedule('*/15 * * * *', () => {
+cron.schedule('0 * * * *', () => {
     console.log('Running health check...');
     checkHealth(true, null);
 });
